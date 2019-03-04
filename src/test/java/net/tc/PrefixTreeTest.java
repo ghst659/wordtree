@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.*;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -91,5 +92,56 @@ public class PrefixTreeTest {
         t.addWord("is");
         t.addWord("car");
         Assertions.assertEquals(want, t.canBreakIntoWords(text));
+    }
+
+    // @Test
+    public void testMakeWordList() {
+        String text = "0123456789abcdef";
+        PrefixTree.BreakIndex a = PrefixTree.BreakIndex.newNode(null, 0);
+        PrefixTree.BreakIndex b = PrefixTree.BreakIndex.newNode(a, 1);
+        PrefixTree.BreakIndex c = PrefixTree.BreakIndex.newNode(a, 2);
+        PrefixTree.BreakIndex d = PrefixTree.BreakIndex.newNode(b, 4);
+        PrefixTree.BreakIndex e = PrefixTree.BreakIndex.newNode(b, 16);
+        PrefixTree.BreakIndex f = PrefixTree.BreakIndex.newNode(c, 16);
+        PrefixTree.BreakIndex g = PrefixTree.BreakIndex.newNode(c, 6);
+        PrefixTree.BreakIndex h = PrefixTree.BreakIndex.newNode(g, 10);
+        PrefixTree.BreakIndex i = PrefixTree.BreakIndex.newNode(h, 16);
+        List<List<String>> got = PrefixTree.makeWordLists(text, a);
+        for (List<String> s : got) {
+            for (String w : s) {
+                System.out.printf("'%s' ", w);
+            }
+            System.out.printf("\n");
+        }
+    }
+
+    @Test
+    public void testWordBreak() {
+        PrefixTree t = new PrefixTree();
+        t.addWord("the");
+        t.addWord("a");
+        t.addWord("cat");
+        t.addWord("car");
+        t.addWord("i");
+        t.addWord("is");
+        t.addWord("mat");
+        t.addWord("mara");
+        t.addWord("mar");
+        t.addWord("chat");
+        t.addWord("at");
+        t.addWord("catch");
+        t.addWord("in");
+        t.addWord("visible");
+        t.addWord("invisible");
+        t.addWord("el");
+        t.addWord("chattel");
+        String text = "thecatchatinvisible";
+        List<List<String>> got = t.wordBreak(text);
+        for (List<String> s : got) {
+            for (String w : s) {
+                System.out.printf("'%s' ", w);
+            }
+            System.out.printf("\n");
+        }
     }
 }
