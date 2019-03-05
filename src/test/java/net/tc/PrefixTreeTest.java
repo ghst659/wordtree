@@ -63,7 +63,7 @@ public class PrefixTreeTest {
             }
             long memAfter = rt.totalMemory();
             long delta = memAfter - memBefore;
-            System.out.format("%s: memory: %d\n", path, delta);
+            System.out.format("%s: memory: %d;  nodes: %d\n", path, delta, PrefixTree.nodeCount);
         } catch (IOException e) {
             System.err.format("error: %s\n", e.toString());
         }
@@ -83,6 +83,7 @@ public class PrefixTreeTest {
                 Arguments.of("o", false)
         );
     }
+
     @ParameterizedTest
     @MethodSource("breakableTest")
     public void testCanBeBroken(String text, boolean want) {
@@ -94,27 +95,6 @@ public class PrefixTreeTest {
         Assertions.assertEquals(want, t.canBreakIntoWords(text));
     }
 
-    // @Test
-    public void testMakeWordList() {
-        String text = "0123456789abcdef";
-        PrefixTree.BreakIndex a = PrefixTree.BreakIndex.newNode(null, 0);
-        PrefixTree.BreakIndex b = PrefixTree.BreakIndex.newNode(a, 1);
-        PrefixTree.BreakIndex c = PrefixTree.BreakIndex.newNode(a, 2);
-        PrefixTree.BreakIndex d = PrefixTree.BreakIndex.newNode(b, 4);
-        PrefixTree.BreakIndex e = PrefixTree.BreakIndex.newNode(b, 16);
-        PrefixTree.BreakIndex f = PrefixTree.BreakIndex.newNode(c, 16);
-        PrefixTree.BreakIndex g = PrefixTree.BreakIndex.newNode(c, 6);
-        PrefixTree.BreakIndex h = PrefixTree.BreakIndex.newNode(g, 10);
-        PrefixTree.BreakIndex i = PrefixTree.BreakIndex.newNode(h, 16);
-        List<List<String>> got = PrefixTree.makeWordLists(text, a);
-        for (List<String> s : got) {
-            for (String w : s) {
-                System.out.printf("'%s' ", w);
-            }
-            System.out.printf("\n");
-        }
-    }
-
     @Test
     public void testWordBreak() {
         PrefixTree t = new PrefixTree();
@@ -124,8 +104,8 @@ public class PrefixTreeTest {
         t.addWord("car");
         t.addWord("i");
         t.addWord("is");
+        t.addWord("scat");
         t.addWord("mat");
-        t.addWord("mara");
         t.addWord("mar");
         t.addWord("chat");
         t.addWord("at");
@@ -133,9 +113,7 @@ public class PrefixTreeTest {
         t.addWord("in");
         t.addWord("visible");
         t.addWord("invisible");
-        t.addWord("el");
-        t.addWord("chattel");
-        String text = "thecatchatinvisible";
+        String text = "iscatchatinvisible";
         List<List<String>> got = t.wordBreak(text);
         for (List<String> s : got) {
             for (String w : s) {

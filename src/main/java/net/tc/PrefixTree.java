@@ -16,7 +16,7 @@ public class PrefixTree {
         }
     }
 
-    public static List<List<String>> makeWordLists(String text, PrefixTree.BreakIndex breaks) {
+    private static List<List<String>> makeWordLists(String text, PrefixTree.BreakIndex breaks) {
         List<List<String>> result = new LinkedList<>();
         LinkedList<Integer> indices = new LinkedList<>();
         wordList(text, breaks, indices, result);
@@ -126,6 +126,7 @@ public class PrefixTree {
         if (child == null) {
             child = new PrefixTree();
             children.put(k, child);
+            nodeCount++;
         }
         child.addWord(rest);
     }
@@ -150,4 +151,5 @@ public class PrefixTree {
     }
     private TreeMap<Character, PrefixTree> children = new TreeMap<>();
     private boolean wordEnd = false;
+    public static int nodeCount = 0;
 }
